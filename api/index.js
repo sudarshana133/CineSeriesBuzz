@@ -12,7 +12,10 @@ app.use(express.json());
 app.use('/api/auth',authRoute);
 app.use('/api/collection',collectionRoute);
 
-mongoose.connect(process.env.MONGODB_URL)
+mongoose.connect(process.env.MONGODB_URL,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+})
 .then(()=>console.log('mongodb connected'))
 .catch((err)=>console.log(err))
 
