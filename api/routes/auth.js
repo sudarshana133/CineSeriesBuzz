@@ -33,7 +33,7 @@ router.post('/login', async (req, res) => {
       }
   
       // If username and password match, create a JWT
-      const accessToken = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: "5d" });
+      const accessToken = jwt.sign({ id: user._id }, process.env.SECRET, { expiresIn: "365d" });
       const { password, ...info } = user._doc;
       res.status(200).json({ ...info, accessToken });
     } catch (error) {
