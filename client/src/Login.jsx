@@ -38,7 +38,7 @@ const Login = () => {
           className="flex justify-center items-start h-screen"
           style={{
             background:
-              `url(https://assets.nflxext.com/ffe/siteui/vlv3/77d35039-751f-4c3e-9c8d-1240c1ca6188/cf244808-d722-428f-80a9-052acdf158ec/IN-en-20231106-popsignuptwoweeks-perspective_alpha_website_large.jpg)`,
+              `url(/loginBG.png)`,
               boxShadow:"260px 100px 2000px rgba(0,0,0,0.75) inset"
           }}
         >

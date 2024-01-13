@@ -14,8 +14,11 @@ const UserCollection = () => {
       if (user) {
         const { username, accessToken } = user;
         try {
-          const res = await axios.get(
-            `http://localhost:8000/api/collection/${movieOrTV}/${username}`,
+          const res = await axios.post(
+            `http://localhost:8000/api/collection/${movieOrTV}`,
+            {
+              username:username
+            },
             { headers: { token: "Bearer " + accessToken } }
           );
           setCollection(res.data);

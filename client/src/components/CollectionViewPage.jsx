@@ -1,11 +1,12 @@
-import React, { cloneElement, useEffect, useState } from "react";
+import React, { cloneElement, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import { fetchFromAPI } from "./utils/Fetch";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
+import Edit from "./Edit";
 const CollectionViewPage = () => {
-  const { title,movieOrTV } = useParams();
+  const { title, movieOrTV } = useParams();
   const [collectionName, setCollectionName] = useState([]);
   const [deleteDiv, setDeleteDiv] = useState(-1);
   const [userObjects, setUserObjects] = useState([]);
@@ -13,14 +14,17 @@ const CollectionViewPage = () => {
   const [index, setIndex] = useState(-1);
   const collection = collectionName[0];
   const navigate = useNavigate();
+  const [isEditing, setIsEditing] = useState(false);
+  const [intialTitle, setInitialTitle] = useState(title);
+  const [editedText, setEditedText] = useState(title);
+  const [sendTitleToBackend, setSendTitleToBackend] = useState(false);
+  const h1Ref = useRef(null);
   if (user) {
-    const { username, accessToken } = user;
     useEffect(() => {
       const getCollection = async () => {
         try {
           const res = await axios.get(
-            `http://localhost:8000/api/collection/${movieOrTV}/${title}/${username}`,
-            { headers: { token: "Bearer " + accessToken } }
+            `http://localhost:8000/api/collection/${movieOrTV}/${title}/`
           );
           setCollectionName(res.data);
         } catch (error) {
@@ -58,7 +62,6 @@ const CollectionViewPage = () => {
 
     fetchDataForCollection();
   }, [collectionName]);
-
   // handling the deleting of an item
   const handleDelete = async (index) => {
     setIndex(index);
@@ -68,7 +71,8 @@ const CollectionViewPage = () => {
 
       // Fetching the users objects
       const res = await axios.get(
-        `http://localhost:8000/api/collection/${movieOrTV}/${title}/${username}`,
+        `http://localhost:8000/api/collection/${movieOrTV}/${title}`,
+        { username: username },
         { headers: { token: "Bearer " + accessToken } }
       );
 
@@ -80,8 +84,8 @@ const CollectionViewPage = () => {
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-      const { username, accessToken } = user;
-    const updateData = async() => {
+    const { username, accessToken } = user;
+    const updateData = async () => {
       if (userObjects && userObjects.length > 0) {
         if (userObjects.length === 1) {
           try {
@@ -89,7 +93,7 @@ const CollectionViewPage = () => {
               `http://localhost:8000/api/collection/delete/${title}/${username}`,
               { headers: { token: "Bearer " + accessToken } }
             );
-            navigate('/');
+            navigate("/");
           } catch (error) {
             console.log(error);
           }
@@ -97,15 +101,15 @@ const CollectionViewPage = () => {
         if (index >= 0 && index < userObjects.length) {
           userObjects.splice(index, 1);
         }
-  
+
         const putRes = await axios.put(
           `http://localhost:8000/api/collection/update/${title}/${username}`,
           { objects: userObjects },
           { headers: { token: "Bearer " + accessToken } }
         );
-  
+
         const updatedData = putRes.data;
-  
+
         const newData = {
           _id: updatedData._id,
           username: updatedData.username,
@@ -114,12 +118,47 @@ const CollectionViewPage = () => {
           objects: updatedData.objects,
           __v: updatedData.__v,
         };
-  
+
         setCollectionName([newData]);
       }
     };
     updateData();
   }, [userObjects]);
+
+  // handling the text of title entered by the user
+  const handleInput = (event) => {
+    if(h1Ref.current)
+    {
+      setEditedText(event.target.innerText);
+    }
+  };
+  // handling the data to be sent to backend
+  if (user) {
+    if (sendTitleToBackend) {
+      editedText.trim();
+      if(editedText!=="")
+      {
+        const { username, accessToken } = user;
+        const handleSendingTheUpdatedTitle = async () => {
+          try {
+            const res = await axios.post(
+              `http://localhost:8000/api/collection/update/${title}`,
+              { username: username, title: editedText },
+              {
+                headers: {
+                  token: "Bearer " + accessToken,
+                },
+              }
+            );
+            navigate(`/collection/movie/${editedText}`);
+          } catch (error) {
+            console.log(error);
+          }
+        };
+        handleSendingTheUpdatedTitle();
+      }
+    }
+  }
   return (
     <div>
       <div className="flex justify-center w-full flex-col sm:flex-row">
@@ -137,9 +176,26 @@ const CollectionViewPage = () => {
               )}
             </div>
           </div>
-          <div className="desc text-[13px] md:text-[15px] lg:text-[15px] py-1 text-justify font-bold text-[#5055eb]">
-            <h1>{collectionName[0]?.title}</h1>
+
+          <div className="flex items-center justify-center gap-2">
+            <div className="desc text-[13px] md:text-[15px] lg:text-[15px] py-1 text-justify font-bold text-[#5055eb]">
+              <h1
+                contentEditable={isEditing === true ? true : false}
+                onInput={handleInput}
+                ref={h1Ref}
+              >
+                {editedText}
+              </h1>
+            </div>
+            {/* <Edit
+              isEditing={isEditing}
+              setIsEditing={setIsEditing}
+              initialTitle={intialTitle}
+              setInitialTitle={setInitialTitle}
+              setSendTitleToBackend={setSendTitleToBackend}
+            /> */}
           </div>
+
           <div className="desc text-[13px] sm:h-[100px] md:text-[14px] lg:text-[15px] p-3 text-justify">
             <h1>{collectionName[0]?.desc}</h1>
           </div>

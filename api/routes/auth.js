@@ -7,6 +7,7 @@ router.get('/',(req,res)=>{
 })
 router.post('/register',async(req,res)=>{
     const newUser = new User({
+        id:Date.now(),
         username:req.body.username,
         email:req.body.email,
         password: md5(req.body.password)
