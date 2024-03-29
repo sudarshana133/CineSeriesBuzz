@@ -40,6 +40,9 @@ const Search = () => {
         <h1 className="text-2xl ml-3 mt-10 mb-4 text-center font-extrabold">
           {categoryVar.category === "movie" ? "Movie" : "TV-Shows"}
         </h1>
+        <h1 className="text-lg ml-7 mt-10 mb-4 font-extrabold">
+          Results for <span className="text-red-600">{searchTerm}</span>
+        </h1>
       </div>
       <div className="movieTemplate grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-3 gap-2">
         {movieFeed.map((item, index) => (

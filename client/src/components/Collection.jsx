@@ -4,7 +4,7 @@ import { RxCross1 } from "react-icons/rx";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 
-const Collection = ({ setIsCollectionInvoked, movieOrTVShowId,movieOrTV }) => {
+const Collection = ({ setIsCollectionInvoked, movieOrTVShowId, movieOrTV }) => {
   // state for storing the checkboxes
   const [newCollection, setNewCollection] = useState(false);
   const [titleNullCheck, setTitleCheckNull] = useState(false);
@@ -23,9 +23,9 @@ const Collection = ({ setIsCollectionInvoked, movieOrTVShowId,movieOrTV }) => {
       const func = async () => {
         try {
           const res = await axios.post(
-            `http://localhost:8000/api/collection/${movieOrTV}`,
+            `https://cineseriesbuzz.onrender.com/api/collection/${movieOrTV}`,
             {
-              username:username
+              username: username,
             },
             {
               headers: {
@@ -60,18 +60,14 @@ const Collection = ({ setIsCollectionInvoked, movieOrTVShowId,movieOrTV }) => {
             username: username,
             title: title,
             desc: description,
-            objects: [ movieOrTVShowId],
-            movieOrTV:movieOrTV,
+            objects: [movieOrTVShowId],
+            movieOrTV: movieOrTV,
           };
           try {
             const res = await axios.post(
-              `http://localhost:8000/api/collection/create`,
+              `https://cineseriesbuzz.onrender.com/api/collection/create`,
               data,
-              {
-                headers: {
-                  token: "Bearer " + accessToken,
-                },
-              }
+              { headers: { token: "Bearer " + accessToken } }
             );
           } catch (error) {
             console.log(error);
@@ -89,9 +85,9 @@ const Collection = ({ setIsCollectionInvoked, movieOrTVShowId,movieOrTV }) => {
       const { username, accessToken } = user;
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/collection/${movieOrTV}/${checkbox}`,
+          `https://cineseriesbuzz.onrender.com/api/collection/${movieOrTV}/${checkbox}`,
           {
-            username:username
+            username: username,
           },
           {
             headers: {
@@ -120,7 +116,7 @@ const Collection = ({ setIsCollectionInvoked, movieOrTVShowId,movieOrTV }) => {
       const { username, accessToken } = user;
       try {
         const res = await axios.put(
-          `http://localhost:8000/api/collection/update/${title}/${username}`,
+          `https://cineseriesbuzz.onrender.com/api/collection/update/${title}/${username}`,
           { title: title, objects: objects },
           {
             headers: {

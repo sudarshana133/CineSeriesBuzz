@@ -15,7 +15,7 @@ const UserCollection = () => {
         const { username, accessToken } = user;
         try {
           const res = await axios.post(
-            `http://localhost:8000/api/collection/${movieOrTV}`,
+            `https://cineseriesbuzz.onrender.com/api/collection/${movieOrTV}`,
             {
               username:username
             },

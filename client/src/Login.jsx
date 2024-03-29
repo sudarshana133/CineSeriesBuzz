@@ -15,7 +15,7 @@ const Login = () => {
     const password = passwordRef.current.value;
     const sendLoginData = async () => {
       try {
-        const res = await axios.post(`http://localhost:8000/api/auth/login`, {
+        const res = await axios.post(`https://cineseriesbuzz.onrender.com/api/auth/login`, {
           username,
           password,
         });

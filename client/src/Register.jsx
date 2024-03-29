@@ -19,7 +19,7 @@ const Register = () => {
     const sendLoginData = async () => {
       try {
         const res = await axios.post(
-          `http://localhost:8000/api/auth/register`,
+          `https://cineseriesbuzz.onrender.com/api/auth/register`,
           { username, email, password }
         );
         // console.log(res.data);

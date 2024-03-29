@@ -13,7 +13,7 @@ const Profile = () => {
     const getMovieCollection = async () => {
       try {
         const res = await axios.post(
-          'http://localhost:8000/api/collection/movie',
+          'https://cineseriesbuzz.onrender.com/api/collection/movie',
            { username: username },
           {
             headers: { token: "Bearer " + accessToken },
@@ -31,7 +31,7 @@ const Profile = () => {
     const getTVCollection = async () => {
       try {
         const res = await axios.post(
-          `http://localhost:8000/api/collection/tv`,
+          `https://cineseriesbuzz.onrender.com/api/collection/tv`,
           { username: username },
           {
             headers: { token: "Bearer " + accessToken },

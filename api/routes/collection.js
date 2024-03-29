@@ -2,6 +2,37 @@ const router = require('express').Router();
 const Collection = require('../models/Collection');
 const verify = require('../verifyToken');
 
+// create
+router.post('/create',verify,async(req,res)=>{
+    const newCollection = new Collection({
+        username: req.body.username,
+        title: req.body.title,
+        desc : req.body.desc,
+        objects : req.body.objects,
+        movieOrTV:req.body.movieOrTV
+    })
+    try {
+        const collection =await newCollection.save();
+        res.status(200).json(collection);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+router.delete('/delete/:title/',verify,async(req,res)=>{
+    const title = req.params.title;
+    const username = req.body.username;
+    try {
+        const foundCollection = await Collection.findOne({title:title,username:username});
+        if(!foundCollection) return res.status(404).json("Collection not found");
+        else
+        {
+            await Collection.findOneAndDelete({title:title});
+            res.status(200).json("Collection deleted");
+        }
+    } catch (error) {
+        res.status(500).json(error)
+    }
+})
 // get all collections
 router.post('/:movieOrTV/',async(req,res)=>{
     const {username} = req.body;
@@ -32,20 +63,21 @@ router.get('/:movieOrTV/:collectionName/',async(req,res)=>{
         return res.status(500).json("Error in finding the collection");
     }
 })
-// create
-router.post('/create',verify,async(req,res)=>{
-    const newCollection = new Collection({
-        username: req.body.username,
-        title: req.body.title,
-        desc : req.body.desc,
-        objects : req.body.objects,
-        movieOrTV:req.body.movieOrTV
-    })
+// handling the title update
+router.post('/update/:title',verify,async(req,res)=>{
+    const title = req.params.title;
+    const username = req.body.username;
     try {
-        const collection =await newCollection.save();
-        res.status(200).json(collection);
+        const foundCollection = await Collection.findOne({title:title,username:username});
+        if(!foundCollection) return res.status(404).json("Collection not found");
+        else
+        {
+            const {title} = req.body;
+            const updatedCollection = await Collection.findOneAndUpdate({title:foundCollection.title},{$set:{title:title}},{new:true});
+            return res.status(200).json(updatedCollection);
+        }
     } catch (error) {
-        res.status(500).json(error);
+        return res.status(500).json(error)
     }
 })
 router.put('/update/:title/:username',verify,async(req,res)=>{
@@ -64,38 +96,6 @@ router.put('/update/:title/:username',verify,async(req,res)=>{
         }
     } catch (error) {
        return res.status(500).json(error);
-    }
-})
-// handling the title update
-router.post('/update/:title',verify,async(req,res)=>{
-    const title = req.params.title;
-    const username = req.body.username;
-    try {
-        const foundCollection = await Collection.findOne({title:title,username:username});
-        if(!foundCollection) return res.status(404).json("Collection not found");
-        else
-        {
-            const {title} = req.body;
-            const updatedCollection = await Collection.findOneAndUpdate({title:foundCollection.title},{$set:{title:title}},{new:true});
-            return res.status(200).json(updatedCollection);
-        }
-    } catch (error) {
-        return res.status(500).json(error)
-    }
-})
-router.delete('/delete/:title/',verify,async(req,res)=>{
-    const title = req.params.title;
-    const username = req.body.username;
-    try {
-        const foundCollection = await Collection.findOne({title:title,username:username});
-        if(!foundCollection) return res.status(404).json("Collection not found");
-        else
-        {
-            await Collection.findOneAndDelete({title:title});
-            res.status(200).json("Collection deleted");
-        }
-    } catch (error) {
-        res.status(500).json(error)
     }
 })
 module.exports = router;

@@ -24,7 +24,7 @@ const CollectionViewPage = () => {
       const getCollection = async () => {
         try {
           const res = await axios.get(
-            `http://localhost:8000/api/collection/${movieOrTV}/${title}/`
+            `https://cineseriesbuzz.onrender.com/api/collection/${movieOrTV}/${title}/`
           );
           setCollectionName(res.data);
         } catch (error) {
@@ -71,7 +71,7 @@ const CollectionViewPage = () => {
 
       // Fetching the users objects
       const res = await axios.get(
-        `http://localhost:8000/api/collection/${movieOrTV}/${title}`,
+        `https://cineseriesbuzz.onrender.com/api/collection/${movieOrTV}/${title}`,
         { username: username },
         { headers: { token: "Bearer " + accessToken } }
       );
@@ -90,8 +90,11 @@ const CollectionViewPage = () => {
         if (userObjects.length === 1) {
           try {
             const delCollection = await axios.delete(
-              `http://localhost:8000/api/collection/delete/${title}/${username}`,
-              { headers: { token: "Bearer " + accessToken } }
+              `https://cineseriesbuzz.onrender.com/api/collection/delete/${title}`,
+              {
+                data: { username },
+                headers: { token: "Bearer " + accessToken },
+              }
             );
             navigate("/");
           } catch (error) {
@@ -103,7 +106,7 @@ const CollectionViewPage = () => {
         }
 
         const putRes = await axios.put(
-          `http://localhost:8000/api/collection/update/${title}/${username}`,
+          `https://cineseriesbuzz.onrender.com/api/collection/update/${title}/${username}`,
           { objects: userObjects },
           { headers: { token: "Bearer " + accessToken } }
         );
@@ -127,8 +130,7 @@ const CollectionViewPage = () => {
 
   // handling the text of title entered by the user
   const handleInput = (event) => {
-    if(h1Ref.current)
-    {
+    if (h1Ref.current) {
       setEditedText(event.target.innerText);
     }
   };
@@ -136,13 +138,12 @@ const CollectionViewPage = () => {
   if (user) {
     if (sendTitleToBackend) {
       editedText.trim();
-      if(editedText!=="")
-      {
+      if (editedText !== "") {
         const { username, accessToken } = user;
         const handleSendingTheUpdatedTitle = async () => {
           try {
             const res = await axios.post(
-              `http://localhost:8000/api/collection/update/${title}`,
+              `https://cineseriesbuzz.onrender.com/api/collection/update/${title}`,
               { username: username, title: editedText },
               {
                 headers: {

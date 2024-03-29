@@ -26,7 +26,7 @@ const Header = ({ isLoginPage,isRegister }) => {
             <div>
               <div className="px-4">
                 <select
-                  className="bg-black text-white cursor-pointer text-center rounded-md lg:w-full max-[640px]:w-[20px]"
+                  className="bg-black flex items-center justify-center text-white cursor-pointer text-center rounded-md lg:w-full max-[640px]:w-[20px]"
                   style={{ border: "1px solid white" }}
                   value={categoryVariable.category}
                   onChange={(e) => categoryVariable.setCategory(e.target.value)}
@@ -59,7 +59,7 @@ const Header = ({ isLoginPage,isRegister }) => {
           {!isLoginPage && (
             <div className="px-5">
               <select
-                className="bg-black text-white cursor-pointer text-center rounded-md lg:w-full max-[640px]:w-[20px]"
+                className="bg-black flex items-center justify-center text-white cursor-pointer text-center rounded-md lg:w-full max-[640px]:w-[20px]"
                 style={{ border: "1px solid white" }}
                 value={categoryVariable.category}
                 onChange={(e) => categoryVariable.setCategory(e.target.value)}

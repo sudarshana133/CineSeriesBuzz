@@ -16,4 +16,5 @@ export {default as Trailer} from "./Trailer.jsx"
 export {default as CastProfile} from "./CastProfile.jsx"
 export {default as Loader} from "./Loader.jsx"
 export {default as Collection} from "./Collection.jsx";
-export {default as Edit} from "./Edit.jsx"
+export {default as Edit} from "./Edit.jsx";
+export {default as GenreData} from "./GenreData.jsx"

@@ -5,7 +5,7 @@ import { Person, Skeleton, Trailer } from "./";
 import CategoryContext from "../context/categoryContext/CategoryContext";
 import { GrCircleInformation } from "react-icons/gr";
 
-const Carousel = ({ list, tvOrMovie, videos, cast }) => {
+const Carousel = ({ list, tvOrMovie, videos, cast ,isCast}) => {
   const carouselContainer = useRef();
   const [yes, setYes] = useState(false);
   const [IsLoading, setIsLoading] = useState(true);
@@ -57,8 +57,9 @@ const Carousel = ({ list, tvOrMovie, videos, cast }) => {
                     <div className="mx-[13px] mt-1 lg:mx-[25px] relative main overflow-y-hidden">
                       <div className="img w-[180px] sm:w-[170px] md:w-[210px] lg:w-[200px] ">
                         <img
-                          src={`https://image.tmdb.org/t/p/w500/${item.poster_path}`}
+                          src={`${item.poster_path==null?"/image-not-found.jpg":`https://image.tmdb.org/t/p/w500/${item.poster_path}`}`}
                           alt="poster"
+                          onError={()=>this.src="/client/public/image-not-found.jpg"}
                           className="border-[1px] border-solid border-gray-400 rounded-md"
                         />
                       </div>
@@ -85,7 +86,7 @@ const Carousel = ({ list, tvOrMovie, videos, cast }) => {
                               Play
                             </p>
                             <a
-                              href={`/${CategoryVar.category}/${item.id}`}
+                              href={`${isCast?`/${tvOrMovie}/${item.id}`:`/${CategoryVar.category}/${item.id}`}`}
                               className="btn flex ml-2 items-center justify-center bg-white text-black w-[58px] rounded-md text-sm h-[25px]"
                             >
                               More <GrCircleInformation className="ml-1" />
