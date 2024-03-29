@@ -147,7 +147,6 @@ const Home = () => {
     setRandom(arr[randomInt]);
     // console.log(random)
   };
-
   // loading skeleton
   if (IsLoading)
     return (
