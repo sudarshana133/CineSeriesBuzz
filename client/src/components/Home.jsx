@@ -7,7 +7,7 @@ import Skeleton from "./Skeleton";
 import TopRated from "./TopRated";
 import { GrCircleInformation } from "react-icons/gr";
 import Trailer from "./Trailer";
-import UserCollection from "./usersList/userCollection";
+import UserCollection from "./usersList/UserCollection";
 import GenreData from "./GenreData";
 
 const Home = () => {
