@@ -1,13 +1,9 @@
 [build]
-  # Set the base directory to the frontend folder
-  base = "client"
-  # Build command for your frontend project
-  command = "npm run build"
-  # Publish directory where Netlify will find the built files
-  publish = "client/build"
+  # Remove `base` so Netlify works from the root directory
+  command = "npm run build --prefix client"  # Builds project from the `client` folder directly
+  publish = "client/build"  # Direct Netlify to find the built files in `client/build`
 
 [[redirects]]
-  # Redirect all routes to index.html for single-page applications (SPA)
   from = "/*"
   to = "/index.html"
   status = 200
