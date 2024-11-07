@@ -1,16 +1,13 @@
 [build]
-  # Sets the directory where your frontend code is located
+  # Set the base directory to the frontend folder
   base = "client"
-  # Command to build the frontend project
+  # Build command for your frontend project
   command = "npm run build"
-  # Directory where the built files are located after the build command runs
+  # Publish directory where Netlify will find the built files
   publish = "client/build"
 
-  # Specify Node version if needed
-  environment = { NODE_VERSION = "18" }
-
 [[redirects]]
-  # Redirects all routes to index.html for single-page applications (SPA)
+  # Redirect all routes to index.html for single-page applications (SPA)
   from = "/*"
   to = "/index.html"
   status = 200
