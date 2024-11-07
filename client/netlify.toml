@@ -1,21 +1,16 @@
 [build]
-  # Directory where your built site assets are located (e.g., "dist" for Vue, "build" for React)
-  publish = "build"
-  # Command to build your frontend application (e.g., "npm run build" for React, "yarn build" for Vue)
+  # Sets the directory where your frontend code is located
+  base = "client"
+  # Command to build the frontend project
   command = "npm run build"
-  # Node version if needed
+  # Directory where the built files are located after the build command runs
+  publish = "client/build"
+
+  # Specify Node version if needed
   environment = { NODE_VERSION = "18" }
 
-[dev]
-  # Port to run the Netlify dev server
-  port = 8888
-  # The framework's default development command (e.g., "npm start" for React)
-  command = "npm start"
-  # Directory where the development server runs (usually the project's root)
-  targetPort = 3000
-
-# Redirect settings for single-page applications (SPA)
 [[redirects]]
+  # Redirects all routes to index.html for single-page applications (SPA)
   from = "/*"
   to = "/index.html"
   status = 200
